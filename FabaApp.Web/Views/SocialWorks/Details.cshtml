@@ -1,0 +1,37 @@
+﻿@model FabaApp.Web.Data.Entities.SocialWorkEntity
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3>Detalles Obra Social</h3>
+
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DischargeDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DischargeDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-success">Regresar</a>
+
+</div>
