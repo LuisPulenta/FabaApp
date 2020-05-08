@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FabaApp.Web.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class LabsController : Controller
     {
