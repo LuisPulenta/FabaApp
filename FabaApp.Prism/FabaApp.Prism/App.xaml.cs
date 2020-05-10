@@ -4,6 +4,8 @@ using FabaApp.Prism.ViewModels;
 using FabaApp.Prism.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using FabaApp.Common.Services;
+using FabaApp.Common.Helpers;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace FabaApp.Prism
@@ -21,15 +23,39 @@ namespace FabaApp.Prism
 
         protected override async void OnInitialized()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTY2MzIyQDMxMzcyZTMzMmUzMFVnNW5KSnM2dTZmRDljWm1RYTduQXFwRmNKSzVPWk1lT1JGSFRySXZCUTA9");
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            if (Settings.IsLogin)
+            {
+                await NavigationService.NavigateAsync("/FabaAppMasterDetailPage/NavigationPage/RecipesPage");
+            }
+
+            else
+            {
+                await NavigationService.NavigateAsync("/FabaAppMasterDetailPage/NavigationPage/LoginPage");
+                //await NavigationService.NavigateAsync("/NavigationPage/LoginPage");
+            }
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            
+
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+            containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
+            containerRegistry.RegisterForNavigation<FabaAppMasterDetailPage, FabaAppMasterDetailPageViewModel>();
+
+
+            containerRegistry.RegisterForNavigation<RecipesPage, RecipesPageViewModel>();
+
+            containerRegistry.RegisterForNavigation<WrongRecipesPage, WrongRecipesPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddRecipePage, AddRecipePageViewModel>();
+
+            containerRegistry.RegisterForNavigation<TakePhotoPage, TakePhotoPageViewModel>();
         }
     }
 }

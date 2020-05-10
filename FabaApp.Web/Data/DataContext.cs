@@ -15,9 +15,10 @@ namespace FabaApp.Web.Data
 
         public DbSet<LabEntity> Labs { get; set; }
         public DbSet<RecipeEntity> Recipes { get; set; }
-        public DbSet<RecipeDetailEntity> RecipeDetais { get; set; }
+        public DbSet<RecipeDetailEntity> RecipeDetails { get; set; }
         public DbSet<SocialWorkEntity> SocialWorks { get; set; }
         public DbSet<Version> Versions { get; set; }
+        public DbSet<CodeEntity> Codes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

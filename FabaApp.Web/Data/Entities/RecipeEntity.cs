@@ -18,7 +18,11 @@ namespace FabaApp.Web.Data.Entities
         [Display(Name = "Fecha Alta")]
         public DateTime DischargeDate { get; set; }
 
-        SocialWorkEntity SocialWork { get; set; }
+        [Display(Name = "Fecha Receta")]
+        public DateTime RecipeDate { get; set; }
+
+
+        public SocialWorkEntity SocialWork { get; set; }
 
         public string Foto1 { get; set; }
         public string Foto2 { get; set; }
@@ -48,7 +52,11 @@ namespace FabaApp.Web.Data.Entities
         public bool Flag3 { get; set; }
         public bool Flag4 { get; set; }
 
+        [MaxLength(15, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres.")]
         public string State { get; set; }
+
+        [Display(Name = "Fecha Estado")]
+        public DateTime StateDate { get; set; }
 
     }
 }

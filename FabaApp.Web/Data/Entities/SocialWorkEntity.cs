@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FabaApp.Web.Data.Entities
@@ -19,5 +20,7 @@ namespace FabaApp.Web.Data.Entities
 
         [Display(Name = "Activo")]
         public bool Active { get; set; }
+
+        public ICollection<CodeEntity> Codes { get; set; }
     }
 }

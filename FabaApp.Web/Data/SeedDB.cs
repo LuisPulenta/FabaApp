@@ -119,6 +119,14 @@ namespace FabaApp.Web.Data
             {
                 AddSocialWork("Osde", DateTime.Now, true);
                 AddSocialWork("Apross", DateTime.Now, true);
+                AddSocialWork("Omint", DateTime.Now, true);
+                AddSocialWork("Amasalud", DateTime.Now, true);
+                AddSocialWork("Prevención Salud", DateTime.Now, true);
+                AddSocialWork("Met Medicina Privada", DateTime.Now, true);
+                AddSocialWork("Swiss Medical", DateTime.Now, true);
+                AddSocialWork("Sipssa", DateTime.Now, true);
+                AddSocialWork("Galeno", DateTime.Now, true);
+                AddSocialWork("Osfa", DateTime.Now, true);
                 await _context.SaveChangesAsync();
             }
         }
