@@ -33,14 +33,12 @@ namespace FabaApp.Web.Data.Entities
         [MaxLength(30, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         public string Email { get; set; }
 
-        //public User User { get; set; }
-
         [Display(Name = "Fecha Alta")]
         public DateTime DischargeDate { get; set; }
 
         [Display(Name = "Activo")]
         public bool Active { get; set; }
 
-        //public ICollection<UserEntity> Users { get; set; }
+        public ICollection<UserEntity> Users { get; set; }
     }
 }

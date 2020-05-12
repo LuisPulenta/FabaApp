@@ -13,6 +13,8 @@ namespace FabaApp.Common.Models
         public DateTime DischargeDate { get; set; }
         public DateTime RecipeDate { get; set; }
         public int SocialWorkId { get; set; }
+        public SocialWorkResponse SocialWork { get; set; }
+        public string UserId { get; set; }
 
         public string Foto1 { get; set; }
         public string Foto2 { get; set; }
@@ -40,5 +42,11 @@ namespace FabaApp.Common.Models
         public bool Flag4 { get; set; }
         public string State { get; set; }
         public DateTime StateDate { get; set; }
+
+        public ICollection<RecipeDetailResponse> RecipeDetails { get; set; }
+
+        public int? CantItems { get; set; }
+
+        public int? CantFotos { get; set; }
     }
 }

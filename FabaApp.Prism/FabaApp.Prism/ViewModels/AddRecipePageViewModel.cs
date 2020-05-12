@@ -338,7 +338,7 @@ namespace FabaApp.Prism.ViewModels
             if (File2 != null)
             {
                 ImageArray2 = FilesHelper.ReadFully(this.File2.GetStream());
-                File1.Dispose();
+                File2.Dispose();
             }
 
             byte[] ImageArray3 = null;
@@ -352,10 +352,10 @@ namespace FabaApp.Prism.ViewModels
             if (File4 != null)
             {
                 ImageArray4 = FilesHelper.ReadFully(this.File4.GetStream());
-                File1.Dispose();
+                File4.Dispose();
             }
 
-
+            var user = JsonConvert.DeserializeObject<UserResponse>(Settings.User);
             var token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
 
             var myrecipe = new RecipeRequest
@@ -374,6 +374,7 @@ namespace FabaApp.Prism.ViewModels
                 SocialWorkId=SocialWork.Id,
                 State="Grabado",
                 StateDate = DateTime.Now,
+                UserId=user.Id
             };
 
             var response = await _apiService.PostAsync(

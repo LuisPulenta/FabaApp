@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using FabaApp.Common.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace FabaApp.Web.Data.Entities
 {
@@ -39,5 +40,7 @@ namespace FabaApp.Web.Data.Entities
 
         [Display(Name = "Activo")]
         public bool Active { get; set; }
+
+        public ICollection<RecipeEntity> Recipes { get; set; }
     }
 }

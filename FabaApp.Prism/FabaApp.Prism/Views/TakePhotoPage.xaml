@@ -21,8 +21,8 @@
             <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
           </Image.GestureRecognizers>
         </Image>
-        <Image WidthRequest="250"
-               HeightRequest="250"
+        <Image WidthRequest="300"
+               HeightRequest="500"
                Aspect="AspectFit"
                HorizontalOptions="CenterAndExpand"
                Source="{Binding ImageSource, Mode=TwoWay}"></Image>
@@ -31,7 +31,8 @@
       <StackLayout>
         <ActivityIndicator IsRunning="{Binding IsRunning}"></ActivityIndicator>
       </StackLayout>
-      <StackLayout Orientation="Horizontal">
+      <StackLayout Orientation="Horizontal"
+                   VerticalOptions="EndAndExpand">
         <Button Text="GUARDAR"
                 BackgroundColor="Purple"
                 IsEnabled="{Binding IsEnabled}"

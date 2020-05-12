@@ -9,6 +9,7 @@ namespace FabaApp.Common.Models
         public DateTime DischargeDate { get; set; }
         public DateTime RecipeDate { get; set; }
         public int SocialWorkId { get; set; }
+        public string UserId { get; set; }
         public byte[] PictureArray1 { get; set; }
         public byte[] PictureArray2 { get; set; }
         public byte[] PictureArray3 { get; set; }

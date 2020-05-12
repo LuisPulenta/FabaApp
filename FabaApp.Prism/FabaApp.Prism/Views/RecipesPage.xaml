@@ -13,5 +13,183 @@
                  Command="{Binding AddRecipeCommand}" />
   </ContentPage.ToolbarItems>
 
+  <StackLayout Padding="5">
+    <SearchBar 
+          Grid.Row="4"
+          Grid.Column="1"
+          Grid.ColumnSpan="2"
+          Placeholder="Buscar..."
+          BackgroundColor="White"
+          FontSize="Micro"
+          WidthRequest="200"
+          Text="{Binding Filter}"
+          TextChanged="SearchBar_TextChanged"
+          HeightRequest="35">
+
+    </SearchBar>
+
+    <StackLayout Orientation="Horizontal"
+                   BackgroundColor="White"
+                   Padding="2"
+                   >
+      <Label Text="Cantidad de Recetas:"
+               FontSize="Small"
+               TextColor="Blue"
+               FontAttributes="Bold"></Label>
+      <Label Text="{Binding CantRecipes}"
+               TextColor="Red"
+               FontSize="Small"
+               FontAttributes="Bold"></Label>
+    </StackLayout>
+
+    <ListView ItemsSource="{Binding Recipes}"
+                HasUnevenRows="True"
+              IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+                SeparatorVisibility="None">
+
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <Frame CornerRadius="10"
+                     HasShadow="True"
+                   HeightRequest="50"
+                     BackgroundColor="White"
+                     Margin="3"
+                     Padding="5"
+                     >
+              <StackLayout 
+                  >
+                <Grid  
+                        RowSpacing="-0">
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    
+                  </Grid.RowDefinitions>
+
+                  <Label Grid.Row="0"
+                           Grid.Column="0"
+                           FontSize="Micro"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           FontAttributes="Bold"
+                           Text="Fecha:"></Label>
+
+                  <Label Grid.Row="0"
+                           Grid.Column="1"
+                           FontSize="Micro"
+                           FontAttributes="None"
+                           TextColor="Blue"
+                           HorizontalOptions="Start"
+                           Text="{Binding DischargeDate, StringFormat='{0:dd/MM/yyyy}'}"></Label>
+                  
+
+                  <Label Grid.Row="0"
+                           Grid.Column="2"
+                           FontSize="Micro"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           Text="Paciente:"></Label>
+
+                  <Label Grid.Row="0"
+                           Grid.Column="3"
+                           FontSize="Micro"
+                           FontAttributes="None"
+                           TextColor="Blue"
+                           HorizontalOptions="Start"
+                           Text="{Binding Name}"></Label>
+
+                  <Label Grid.Row="1"
+                           Grid.Column="0"
+                           FontSize="Micro"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           Text="Obra Social:"></Label>
+
+                  <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Grid.ColumnSpan="3"
+                           FontSize="Micro"
+                           FontAttributes="None"
+                           TextColor="Blue"
+                           HorizontalOptions="Start"
+                           Text="{Binding SocialWork.Name}"></Label>
+
+                  <Label Grid.Row="2"
+                           Grid.Column="0"
+                           FontSize="Micro"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           Text="Items:"></Label>
+
+                  <Label Grid.Row="2"
+                           Grid.Column="1"
+                           FontSize="Micro"
+                           FontAttributes="None"
+                           TextColor="Blue"
+                           HorizontalOptions="Start"
+                           Text="{Binding CantItems}"></Label>
+
+                  <Label Grid.Row="2"
+                           Grid.Column="2"
+                           FontSize="Micro"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           Text="Fotos:"></Label>
+
+                  <Label Grid.Row="2"
+                           Grid.Column="3"
+                           FontSize="Micro"
+                           FontAttributes="None"
+                           TextColor="Blue"
+                           HorizontalOptions="Start"
+                           Text="{Binding CantFotos}"></Label>
+
+                  <ImageButton Grid.Row="0"
+                     Grid.Column="4"
+                     Grid.RowSpan="3"
+                     BackgroundColor="White"
+                     
+                     VerticalOptions="Center"
+                     HeightRequest="30"
+                     Command="{Binding EditRecipeCommand}" 
+                     Source="ic_chevron_right.png"/>
+
+                </Grid>
+              </StackLayout>
+            </Frame>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+
+  </StackLayout>
+
+
+
+    
+
+
+
+
 
 </ContentPage>

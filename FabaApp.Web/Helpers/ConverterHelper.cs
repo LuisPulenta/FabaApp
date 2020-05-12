@@ -2,6 +2,8 @@
 using FabaApp.Web.Data;
 using FabaApp.Web.Data.Entities;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FabaApp.Web.Helpers
 {
@@ -75,6 +77,8 @@ namespace FabaApp.Web.Helpers
             return list;
         }
 
+       
+
 
         public UserResponse ToUserResponse(UserEntity user)
         {
@@ -93,9 +97,10 @@ namespace FabaApp.Web.Helpers
                 UserType = user.UserType
             };
         }
+        
+        
 
-
-        public RecipeResponse ToRecipeResponse(RecipeEntity recipe)
+        public async Task<RecipeResponse> ToRecipeResponse(RecipeEntity recipe)
         {
 
             return new RecipeResponse
@@ -115,7 +120,16 @@ namespace FabaApp.Web.Helpers
                 Foto4 = recipe.Foto4,
                 Id=recipe.Id,
                 SocialWorkId=recipe.SocialWork.Id,
-                
+                UserId=recipe.User.Id,
+                SocialWork = ToSocialWorkResponse(await _context.SocialWorks.FindAsync(recipe.SocialWork.Id)),
+                RecipeDetails = recipe.RecipeDetails?.Select(p => new RecipeDetailResponse
+                {
+                    Id = p.Id,
+                    Code=p.Code,
+                    Description=p.Description,
+                    Quantity=p.Quantity,
+                    RecipeId=p.Recipe.Id
+                }).ToList()
             };
         }
 

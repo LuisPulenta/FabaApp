@@ -31,29 +31,42 @@ namespace FabaApp.Web.Controllers.API
         }
 
         // GET: api/Recipes
-        [HttpGet]
-        public IEnumerable<RecipeEntity> GetRecipes()
-        {
-            return _context.Recipes;
-        }
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetRecipes([FromRoute] string id)
 
-        // GET: api/Recipes/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRecipeEntity([FromRoute] int id)
+      
+        public async Task<IActionResult> GetRecipes([FromRoute] string id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
 
-            var recipeEntity = await _context.Recipes.FindAsync(id);
+            var recipes = await _context.Recipes
+                .Include(m => m.SocialWork)
+                .Include(u => u.User)
+                .ThenInclude(l => l.Lab)
+                .Include(g => g.RecipeDetails)
+                .Where(u => u.User.Id == id)
+                .OrderBy(t => t.RecipeDate)
+                .ToListAsync();
 
-            if (recipeEntity == null)
+            if (recipes == null)
             {
-                return NotFound();
+                return BadRequest("No hay Recetas para este Usuario.");
             }
 
-            return Ok(recipeEntity);
+
+            List<RecipeResponse> recipeResponses = new List<RecipeResponse>();
+
+            foreach (RecipeEntity recipe in recipes)
+            {
+                RecipeResponse recipeResponse = await _converterHelper.ToRecipeResponse(recipe);
+                recipeResponses.Add(recipeResponse);
+            }
+
+            return Ok(recipeResponses);
         }
 
         // PUT: api/Recipes/5
@@ -181,7 +194,8 @@ namespace FabaApp.Web.Controllers.API
                 RecipeDate = request.RecipeDate,
                 State = request.State,
                 StateDate = request.StateDate,
-                SocialWork=await _context.SocialWorks.FindAsync(request.SocialWorkId)
+                SocialWork=await _context.SocialWorks.FindAsync(request.SocialWorkId),
+                User= await _context.Users.FindAsync(request.UserId),
             };
 
             _context.Recipes.Add(recipe);

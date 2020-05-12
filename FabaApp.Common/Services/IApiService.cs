@@ -10,7 +10,12 @@ namespace FabaApp.Common.Services
             string servicePrefix,
             string controller);
 
-
+        Task<Response> GetListAsync<T>(
+            string urlBase,
+            string servicePrefix,
+            string controller,
+            string tokenType,
+            string accessToken);
 
         bool CheckConnection();
 

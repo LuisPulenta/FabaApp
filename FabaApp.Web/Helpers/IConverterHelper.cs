@@ -1,6 +1,7 @@
 ﻿using FabaApp.Common.Models;
 using FabaApp.Web.Data.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FabaApp.Web.Helpers
 {
@@ -18,8 +19,10 @@ namespace FabaApp.Web.Helpers
         List<SocialWorkResponse> ToSocialWorkResponse(List<SocialWorkEntity> socialWorkEntity);
 
         List<CodeResponse> ToCodeResponse(List<CodeEntity> code);
+        
+        
 
-        RecipeResponse ToRecipeResponse(RecipeEntity recipe);
+        Task<RecipeResponse> ToRecipeResponse(RecipeEntity recipe);
 
         RecipeDetailResponse ToRecipeDetailResponse(RecipeDetailEntity recipeDetail);
     }

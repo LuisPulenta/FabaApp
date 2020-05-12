@@ -13,7 +13,7 @@ namespace FabaApp.Web.Data.Entities
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public string Name { get; set; }
 
-        //public User User { get; set; }
+        public UserEntity User { get; set; }
 
         [Display(Name = "Fecha Alta")]
         public DateTime DischargeDate { get; set; }
