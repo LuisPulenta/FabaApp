@@ -70,6 +70,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
                   <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -171,8 +172,17 @@
                      
                      VerticalOptions="Center"
                      HeightRequest="30"
+                     Command="{Binding DeleteRecipeCommand}" 
+                     Source="ic_action_delete_forever.png"/>
+                  <ImageButton Grid.Row="0"
+                     Grid.Column="5"
+                     Grid.RowSpan="3"
+                     BackgroundColor="White"
+                     
+                     VerticalOptions="Center"
+                     HeightRequest="30"
                      Command="{Binding EditRecipeCommand}" 
-                     Source="ic_chevron_right.png"/>
+                     Source="ic_action_edit.png"/>
 
                 </Grid>
               </StackLayout>

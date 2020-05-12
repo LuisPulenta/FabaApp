@@ -98,6 +98,7 @@ namespace FabaApp.Prism.ViewModels
             LoadRecipes();
             Recipes = new ObservableCollection<RecipeItemViewModel>();
             Title = "Recetas";
+            IsRefreshing = false;
         }
 
         public async void LoadRecipes()
@@ -116,11 +117,13 @@ namespace FabaApp.Prism.ViewModels
                 IsRunning = false;
                 IsEnabled = true;
                 await App.Current.MainPage.DisplayAlert("Error", "Problema para recuperar datos.", "Aceptar");
+                IsRefreshing = false;
                 return;
             }
             MyRecipes = (List<RecipeItemViewModel>)response.Result;
-            RefreshList();
             IsRefreshing = false;
+            RefreshList();
+            
         }
 
         public void RefreshList()
@@ -129,7 +132,7 @@ namespace FabaApp.Prism.ViewModels
             if (string.IsNullOrEmpty(this.Filter))
             {
 
-                var myListRecipesViewModel = MyRecipes.Select(a => new RecipeItemViewModel(_navigationService)
+                var myListRecipesViewModel = MyRecipes.Select(a => new RecipeItemViewModel(_navigationService, _apiService)
                 {
                     Id = a.Id,
                     DischargeDate=a.DischargeDate,
@@ -156,10 +159,11 @@ namespace FabaApp.Prism.ViewModels
                     .OrderBy(o => o.RecipeDate));
 
                 CantRecipes = Recipes.Count();
+                
             }
             else
             {
-                var myListRecipesViewModel = MyRecipes.Select(a => new RecipeItemViewModel(_navigationService)
+                var myListRecipesViewModel = MyRecipes.Select(a => new RecipeItemViewModel(_navigationService, _apiService)
                 {
                     Id = a.Id,
                     DischargeDate = a.DischargeDate,
@@ -199,12 +203,12 @@ namespace FabaApp.Prism.ViewModels
 
         private async void Search()
         {
-            //RefreshList();
+            RefreshList();
         }
 
         private async void Refresh()
         {
-            //LoadRecipes();
+            LoadRecipes();
         }
 
         static int QtyPhoto(string Foto1, string Foto2, string Foto3, string Foto4)
@@ -225,7 +229,8 @@ namespace FabaApp.Prism.ViewModels
 
         private async void AddRecipe()
         {
-            await _navigationService.NavigateAsync("/FabaAppMasterDetailPage/NavigationPage/AddRecipePage");
+            await _navigationService.NavigateAsync("AddRecipePage");
+            //await _navigationService.NavigateAsync("/FabaAppMasterDetailPage/NavigationPage/AddRecipePage");
         }
     }
 }

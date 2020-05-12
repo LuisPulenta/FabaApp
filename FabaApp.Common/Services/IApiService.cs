@@ -36,5 +36,12 @@ namespace FabaApp.Common.Services
            string tokenType,
            string accessToken);
 
+        Task<Response> DeleteAsync(
+            string urlBase,
+            string servicePrefix,
+            string controller,
+            int id,
+            string tokenType,
+            string accessToken);
     }
 }

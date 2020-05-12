@@ -200,28 +200,46 @@ namespace FabaApp.Web.Controllers.API
 
             _context.Recipes.Add(recipe);
             await _context.SaveChangesAsync();
-            return Ok(_converterHelper.ToRecipeResponse(recipe));
+
+            var responseFinal = new RecipeRequest
+            {
+                Id = recipe.Id,
+                Name = recipe.Name,
+                DischargeDate = recipe.DischargeDate,
+                RecipeDate = recipe.RecipeDate,
+                SocialWorkId = recipe.SocialWork.Id,
+                UserId = recipe.User.Id,
+                Flag1 = recipe.Flag1,
+                Flag2 = recipe.Flag2,
+                Flag3 = recipe.Flag3,
+                Flag4 = recipe.Flag4,
+                State = recipe.State,
+                StateDate = recipe.StateDate,
+            };
+            return Ok(responseFinal);
         }
 
-        // DELETE: api/Recipes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRecipeEntity([FromRoute] int id)
+        public async Task<IActionResult> DeleteRecipe([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
-            var recipeEntity = await _context.Recipes.FindAsync(id);
-            if (recipeEntity == null)
+            var recipe = await _context.Recipes
+                .Include(p => p.RecipeDetails)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (recipe == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.Recipes.Remove(recipeEntity);
-            await _context.SaveChangesAsync();
 
-            return Ok(recipeEntity);
+
+            _context.Recipes.Remove(recipe);
+            await _context.SaveChangesAsync();
+            return Ok("Receta borrada");
         }
 
         private bool RecipeEntityExists(int id)

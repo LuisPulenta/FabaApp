@@ -54,6 +54,13 @@ namespace FabaApp.Prism.ViewModels
             {
                 new Menu
                 {
+                    Icon = "ic_home.png",
+                    PageName = "HomePage",
+                    Title = "Inicio",
+                    IsLoginRequired = true
+                },
+                new Menu
+                {
                     Icon = "ic_add_to_home_screen.png",
                     PageName = "RecipesPage",
                     Title = "Agregar Recetas",
@@ -65,6 +72,14 @@ namespace FabaApp.Prism.ViewModels
                     Icon = "ic_error.png",
                     PageName = "WrongRecipesPage",
                     Title = "Recetas Rechazadas",
+                    IsLoginRequired = true
+                },
+
+                 new Menu
+                {
+                    Icon = "ic_settings.png",
+                    PageName = "ConfigPage",
+                    Title = "Configuración",
                     IsLoginRequired = true
                 },
 

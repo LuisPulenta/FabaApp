@@ -8,6 +8,7 @@ namespace FabaApp.Common.Helpers
         private const string _user = "user";
         private const string _token = "token";
         private const string _isLogin = "isLogin";
+        private const string _recipe = "recipe";
         private static readonly string _stringDefault = string.Empty;
         private static readonly bool _boolDefault = false;
 
@@ -29,6 +30,12 @@ namespace FabaApp.Common.Helpers
         {
             get => AppSettings.GetValueOrDefault(_isLogin, _boolDefault);
             set => AppSettings.AddOrUpdateValue(_isLogin, value);
+        }
+
+        public static string Recipe
+        {
+            get => AppSettings.GetValueOrDefault(_recipe, _stringDefault);
+            set => AppSettings.AddOrUpdateValue(_recipe, value);
         }
     }
 }

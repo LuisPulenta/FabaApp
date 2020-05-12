@@ -14,13 +14,13 @@ using Xamarin.Forms;
 
 namespace FabaApp.Prism.ViewModels
 {
-    public class AddRecipePageViewModel : ViewModelBase
+    public class EditRecipePageViewModel : ViewModelBase
     {
         private SocialWorkResponse _socialWork;
         private ObservableCollection<SocialWorkResponse> _socialWorks;
         private ObservableCollection<CodeItemViewModel> _codes;
         private ObservableCollection<CodeItemViewModel> _codes2;
-                
+
         private readonly INavigationService _navigationService;
         private readonly IApiService _apiService;
         private bool _isRunning;
@@ -29,6 +29,7 @@ namespace FabaApp.Prism.ViewModels
         private bool _isRefreshing2;
         private int _cantRecipes;
         private UserResponse _user;
+        private RecipeResponse _recipe;
         private ImageSource _imageSource1;
         private ImageSource _imageSource2;
         private ImageSource _imageSource3;
@@ -41,14 +42,14 @@ namespace FabaApp.Prism.ViewModels
         private DelegateCommand _saveCommand;
         private DelegateCommand _refresh1Command;
         private DelegateCommand _refresh2Command;
-        
+
         private MediaFile _file1;
         private MediaFile _file2;
         private MediaFile _file3;
         private MediaFile _file4;
 
         private DateTime _recipeDate;
-        
+
 
         private byte[] _imageArray1;
         private byte[] _imageArray2;
@@ -60,7 +61,7 @@ namespace FabaApp.Prism.ViewModels
 
         public DelegateCommand Refresh1Command => _refresh1Command ?? (_refresh1Command = new DelegateCommand(Refresh1));
         public DelegateCommand Refresh2Command => _refresh2Command ?? (_refresh2Command = new DelegateCommand(Refresh2));
-        
+
         public DelegateCommand LoadCodesCommand => _loadCodesCommand ?? (_loadCodesCommand = new DelegateCommand(LoadCodes));
         public DelegateCommand SaveCommand => _saveCommand ?? (_saveCommand = new DelegateCommand(Save));
         public DelegateCommand TakePhotoCommand1 => _takePhotoCommand1 ?? (_takePhotoCommand1 = new DelegateCommand(TakePhoto1));
@@ -88,6 +89,11 @@ namespace FabaApp.Prism.ViewModels
             set => SetProperty(ref _name, value);
         }
 
+        public RecipeResponse Recipe
+        {
+            get => _recipe;
+            set => SetProperty(ref _recipe, value);
+        }
 
         public string Filter
         {
@@ -198,34 +204,44 @@ namespace FabaApp.Prism.ViewModels
             set => SetProperty(ref _codes2, value);
         }
 
-        
 
-        
 
-        public AddRecipePageViewModel(INavigationService navigationService, IApiService apiService) : base(navigationService)
+
+
+        public EditRecipePageViewModel(INavigationService navigationService, IApiService apiService) : base(navigationService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
+            Recipe = JsonConvert.DeserializeObject<RecipeResponse>(Settings.Recipe);
             Hoy = DateTime.Today;
-            RecipeDate = DateTime.Today;
+
+            RecipeDate = Recipe.RecipeDate;
             LoadSocialWorksAsync();
             Codes = new ObservableCollection<CodeItemViewModel>();
             Codes2 = new ObservableCollection<CodeItemViewModel>();
+
+            SocialWork = Recipe.SocialWork;
+            LoadCodes();
+            LoadCodes2();
+            Refresh1();
+            Refresh2();
+
             instance = this;
-            ImageSource1 = "noimage.png";
-            ImageSource2 = "noimage.png";
-            ImageSource3 = "noimage.png";
-            ImageSource4 = "noimage.png";
+            Name = Recipe.Name;
+            ImageSource1 = Recipe.Foto1FullPath;
+            ImageSource2 = Recipe.Foto2FullPath;
+            ImageSource3 = Recipe.Foto3FullPath;
+            ImageSource4 = Recipe.Foto4FullPath;
 
             IsEnabled = true;
-            Title = "Agregar Nueva Receta";
+            Title = "Editar Receta";
 
         }
 
         #region Singleton
 
-        private static AddRecipePageViewModel instance;
-        public static AddRecipePageViewModel GetInstance()
+        private static EditRecipePageViewModel instance;
+        public static EditRecipePageViewModel GetInstance()
         {
             return instance;
         }
@@ -257,13 +273,19 @@ namespace FabaApp.Prism.ViewModels
             }
             List<SocialWorkResponse> list = (List<SocialWorkResponse>)response.Result;
             SocialWorks = new ObservableCollection<SocialWorkResponse>(list.OrderBy(t => t.Name));
+
+            if (!string.IsNullOrEmpty(Recipe.SocialWork.Name))
+            {
+                SocialWork = SocialWorks.FirstOrDefault(pt => pt.Name == Recipe.SocialWork.Name);
+            }
+
         }
 
         private async void TakePhoto1()
         {
             var parameters = new NavigationParameters
             {
-                { "sourcePage", "Add" }
+                { "sourcePage", "Edit" }
             };
             NroFoto = 1;
             await _navigationService.NavigateAsync("TakePhotoPage", parameters);
@@ -273,7 +295,7 @@ namespace FabaApp.Prism.ViewModels
         {
             var parameters = new NavigationParameters
             {
-                { "sourcePage", "Add" }
+                { "sourcePage", "Edit" }
             };
             NroFoto = 2;
             await _navigationService.NavigateAsync("TakePhotoPage", parameters);
@@ -283,7 +305,7 @@ namespace FabaApp.Prism.ViewModels
         {
             var parameters = new NavigationParameters
             {
-                { "sourcePage", "Add" }
+                { "sourcePage", "Edit" }
             };
             NroFoto = 3;
             await _navigationService.NavigateAsync("TakePhotoPage", parameters);
@@ -293,7 +315,7 @@ namespace FabaApp.Prism.ViewModels
         {
             var parameters = new NavigationParameters
             {
-                { "sourcePage", "Add" }
+                { "sourcePage", "Edit" }
             };
             NroFoto = 4;
             await _navigationService.NavigateAsync("TakePhotoPage", parameters);
@@ -307,7 +329,7 @@ namespace FabaApp.Prism.ViewModels
                 return;
             }
 
-            if (SocialWork==null)
+            if (SocialWork == null)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Debe seleccionar una Obra Social.", "Aceptar");
                 return;
@@ -320,6 +342,7 @@ namespace FabaApp.Prism.ViewModels
             }
 
             if (_file1 == null && _file2 == null && _file3 == null && _file4 == null)
+
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Debe cargar al menos una foto.", "Aceptar");
                 return;
@@ -375,21 +398,21 @@ namespace FabaApp.Prism.ViewModels
 
             var myrecipe = new RecipeRequest
             {
-                DischargeDate=DateTime.Now,
-                Flag1=true,
+                DischargeDate = DateTime.Now,
+                Flag1 = true,
                 Flag2 = true,
                 Flag3 = true,
                 Flag4 = true,
-                PictureArray1= ImageArray1,
+                PictureArray1 = ImageArray1,
                 PictureArray2 = ImageArray2,
                 PictureArray3 = ImageArray3,
                 PictureArray4 = ImageArray4,
-                Name =Name,
-                RecipeDate= RecipeDate,
-                SocialWorkId=SocialWork.Id,
-                State="Grabado",
+                Name = Name,
+                RecipeDate = RecipeDate,
+                SocialWorkId = SocialWork.Id,
+                State = "Grabado",
                 StateDate = DateTime.Now,
-                UserId=user.Id
+                UserId = user.Id
             };
 
             var response = await _apiService.PostAsync(
@@ -400,7 +423,7 @@ namespace FabaApp.Prism.ViewModels
             "bearer",
             token.Token);
 
-            
+
 
             if (!response.IsSuccess)
             {
@@ -413,7 +436,7 @@ namespace FabaApp.Prism.ViewModels
                     "Aceptar");
                 return;
             }
-            
+
             var myRecipe = (RecipeRequest)response.Result;
 
             foreach (var recipeDetail in Codes2)
@@ -423,7 +446,7 @@ namespace FabaApp.Prism.ViewModels
                     Code = recipeDetail.Code,
                     Description = recipeDetail.Description,
                     Quantity = recipeDetail.Qty,
-                    RecipeId= myRecipe.Id,
+                    RecipeId = myRecipe.Id,
                 };
                 var response2 = await _apiService.PostAsync(
                         url,
@@ -432,7 +455,7 @@ namespace FabaApp.Prism.ViewModels
                         myRecipeDetail,
                         "bearer",
                         token.Token);
-                
+
                 if (!response2.IsSuccess)
                 {
                     IsRunning = false;
@@ -454,9 +477,7 @@ namespace FabaApp.Prism.ViewModels
                 "Guardada con éxito!!",
                 "Aceptar");
 
-            RecipesPageViewModel recipesPageViewModel = RecipesPageViewModel.GetInstance();
-            recipesPageViewModel.LoadRecipes();
-            recipesPageViewModel.RefreshList();
+            //Refrescar Lista de Recetas
 
             await _navigationService.GoBackAsync();
         }
@@ -464,7 +485,7 @@ namespace FabaApp.Prism.ViewModels
         public async void LoadCodes()
         {
 
-            if (SocialWork==null)
+            if (SocialWork == null)
             {
                 await App.Current.MainPage.DisplayAlert(
                     "Error",
@@ -534,7 +555,24 @@ namespace FabaApp.Prism.ViewModels
             IsRefreshing1 = false;
         }
 
-       public async void Refresh1()
+        public async void LoadCodes2()
+        {
+            foreach(var code in Recipe.RecipeDetails)
+            {
+                Codes2.Add(new CodeItemViewModel(_navigationService)
+                {
+                Code=code.Code,
+                Description=code.Description,
+                Qty=code.Quantity,
+                Id=code.Id,
+                }
+                );
+            }
+            
+        }
+
+
+        public async void Refresh1()
         {
             IsRefreshing1 = true;
             Codes.OrderBy(t => t.Code);
@@ -547,12 +585,12 @@ namespace FabaApp.Prism.ViewModels
 
             var myListCodeItemViewModel = Codes2.Select(a => new CodeItemViewModel(_navigationService)
             {
-                Active=a.Active,
-                Code=a.Code,
-                Description=a.Description,
-                Id=a.Id,
-                Qty=a.Qty,
-                SocialWork=a.SocialWork,
+                Active = a.Active,
+                Code = a.Code,
+                Description = a.Description,
+                Id = a.Id,
+                Qty = a.Qty,
+                SocialWork = a.SocialWork,
             });
             Codes2 = new ObservableCollection<CodeItemViewModel>(myListCodeItemViewModel
                    .OrderBy(o => o.Code));

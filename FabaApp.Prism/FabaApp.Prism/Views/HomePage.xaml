@@ -4,7 +4,7 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="FabaApp.Prism.Views.HomePage"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-               BackgroundColor="{StaticResource ColorBackground}"
+               BackgroundColor="Aquamarine"
              Title="{Binding Title}">
   <StackLayout HorizontalOptions="Center"
                Padding="20">

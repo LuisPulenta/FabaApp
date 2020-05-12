@@ -56,6 +56,8 @@ namespace FabaApp.Prism
             containerRegistry.RegisterForNavigation<AddRecipePage, AddRecipePageViewModel>();
 
             containerRegistry.RegisterForNavigation<TakePhotoPage, TakePhotoPageViewModel>();
+            containerRegistry.RegisterForNavigation<ConfigPage, ConfigPageViewModel>();
+            containerRegistry.RegisterForNavigation<EditRecipePage, EditRecipePageViewModel>();
         }
     }
 }

@@ -50,6 +50,25 @@ namespace FabaApp.Web.Controllers.API
             return Ok(_converterHelper.ToRecipeDetailResponse(recipeDetail));
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRecipeDetail([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
+            var recipeDetail = await _context.RecipeDetails
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (recipeDetail == null)
+            {
+                return this.NotFound();
+            }
+
+            _context.RecipeDetails.Remove(recipeDetail);
+            await _context.SaveChangesAsync();
+            return Ok("J");
+        }
 
     }
 }

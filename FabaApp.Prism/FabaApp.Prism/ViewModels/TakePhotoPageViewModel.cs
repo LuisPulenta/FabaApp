@@ -18,9 +18,18 @@ namespace FabaApp.Prism.ViewModels
 
         private bool _isRunning;
         private bool _isEnabled;
+        private string _sourcePage;
+
         private ImageSource _imageSource;
         private MediaFile _file;
-        
+
+
+        public string SourcePage
+        {
+            get => _sourcePage;
+            set => SetProperty(ref _sourcePage, value);
+        }
+
         public bool IsRunning
         {
             get => _isRunning;
@@ -44,7 +53,7 @@ namespace FabaApp.Prism.ViewModels
         private DelegateCommand _takePhotoCommand;
 
         public DelegateCommand CancelCommand => _cancelCommand ?? (_cancelCommand = new DelegateCommand(Cancel));
-        public DelegateCommand SaveCommand => _saveCommand ?? (_cancelCommand = new DelegateCommand(Save));
+        public DelegateCommand SaveCommand => _saveCommand ?? (_saveCommand = new DelegateCommand(Save));
         public DelegateCommand TakePhotoCommand => _takePhotoCommand ?? (_takePhotoCommand = new DelegateCommand(TakePhoto));
 
         public TakePhotoPageViewModel(INavigationService navigationService, IApiService apiService) : base(navigationService)
@@ -54,6 +63,14 @@ namespace FabaApp.Prism.ViewModels
             Title = "Tomar Fotografía";
             IsEnabled = true;
             ImageSource = "noimage";
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            SourcePage = parameters.GetValue<string>("sourcePage");
+            var a = 1;
         }
 
 
@@ -100,80 +117,164 @@ namespace FabaApp.Prism.ViewModels
 
         private async void Save()
         {
-            var addRecipePageViewModel = AddRecipePageViewModel.GetInstance();
 
-            if (addRecipePageViewModel.NroFoto == 1)
+            if (SourcePage=="Add")
             {
+                var addRecipePageViewModel = AddRecipePageViewModel.GetInstance();
 
-                if (_file == null)
+                if (addRecipePageViewModel.NroFoto == 1)
                 {
-                    addRecipePageViewModel.ImageSource1 = "noimage";
-                }
-                else
-                {
-                    addRecipePageViewModel.ImageSource1 = ImageSource.FromStream(() =>
+
+                    if (_file == null)
                     {
-                        var stream = _file.GetStream();
-                        return stream;
-                    });
-                    addRecipePageViewModel.File1 = _file;
+                        addRecipePageViewModel.ImageSource1 = "noimage";
+                    }
+                    else
+                    {
+                        addRecipePageViewModel.ImageSource1 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        addRecipePageViewModel.File1 = _file;
+                    }
                 }
+
+                if (addRecipePageViewModel.NroFoto == 2)
+                {
+
+                    if (_file == null)
+                    {
+                        addRecipePageViewModel.ImageSource2 = "noimage";
+                    }
+                    else
+                    {
+                        addRecipePageViewModel.ImageSource2 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        addRecipePageViewModel.File2 = _file;
+                    }
+                }
+
+                if (addRecipePageViewModel.NroFoto == 3)
+                {
+
+                    if (_file == null)
+                    {
+                        addRecipePageViewModel.ImageSource3 = "noimage";
+                    }
+                    else
+                    {
+                        addRecipePageViewModel.ImageSource3 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        addRecipePageViewModel.File3 = _file;
+                    }
+                }
+
+                if (addRecipePageViewModel.NroFoto == 4)
+                {
+
+                    if (_file == null)
+                    {
+                        addRecipePageViewModel.ImageSource4 = "noimage";
+                    }
+                    else
+                    {
+                        addRecipePageViewModel.ImageSource4 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        addRecipePageViewModel.File4 = _file;
+                    }
+                }
+                await _navigationService.GoBackAsync();
             }
 
-            if (addRecipePageViewModel.NroFoto == 2)
-            {
 
-                if (_file == null)
+            if (SourcePage == "Edit")
+            {
+                var editRecipePageViewModel = EditRecipePageViewModel.GetInstance();
+
+                if (editRecipePageViewModel.NroFoto == 1)
                 {
-                    addRecipePageViewModel.ImageSource2 = "noimage";
-                }
-                else
-                {
-                    addRecipePageViewModel.ImageSource2 = ImageSource.FromStream(() =>
+
+                    if (_file == null)
                     {
-                        var stream = _file.GetStream();
-                        return stream;
-                    });
-                    addRecipePageViewModel.File2 = _file;
+                        editRecipePageViewModel.ImageSource1 = "noimage";
+                    }
+                    else
+                    {
+                        editRecipePageViewModel.ImageSource1 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        editRecipePageViewModel.File1 = _file;
+                    }
                 }
+
+                if (editRecipePageViewModel.NroFoto == 2)
+                {
+
+                    if (_file == null)
+                    {
+                        editRecipePageViewModel.ImageSource2 = "noimage";
+                    }
+                    else
+                    {
+                        editRecipePageViewModel.ImageSource2 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        editRecipePageViewModel.File2 = _file;
+                    }
+                }
+
+                if (editRecipePageViewModel.NroFoto == 3)
+                {
+
+                    if (_file == null)
+                    {
+                        editRecipePageViewModel.ImageSource3 = "noimage";
+                    }
+                    else
+                    {
+                        editRecipePageViewModel.ImageSource3 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        editRecipePageViewModel.File3 = _file;
+                    }
+                }
+
+                if (editRecipePageViewModel.NroFoto == 4)
+                {
+
+                    if (_file == null)
+                    {
+                        editRecipePageViewModel.ImageSource4 = "noimage";
+                    }
+                    else
+                    {
+                        editRecipePageViewModel.ImageSource4 = ImageSource.FromStream(() =>
+                        {
+                            var stream = _file.GetStream();
+                            return stream;
+                        });
+                        editRecipePageViewModel.File4 = _file;
+                    }
+                }
+                await _navigationService.GoBackAsync();
             }
 
-            if (addRecipePageViewModel.NroFoto == 3)
-            {
-
-                if (_file == null)
-                {
-                    addRecipePageViewModel.ImageSource3 = "noimage";
-                }
-                else
-                {
-                    addRecipePageViewModel.ImageSource3 = ImageSource.FromStream(() =>
-                    {
-                        var stream = _file.GetStream();
-                        return stream;
-                    });
-                    addRecipePageViewModel.File3 = _file;
-                }
-            }
-
-            if (addRecipePageViewModel.NroFoto == 4)
-            {
-
-                if (_file == null)
-                {
-                    addRecipePageViewModel.ImageSource4 = "noimage";
-                }
-                else
-                {
-                    addRecipePageViewModel.ImageSource4 = ImageSource.FromStream(() =>
-                    {
-                        var stream = _file.GetStream();
-                        return stream;
-                    });
-                    addRecipePageViewModel.File4 = _file;
-                }
-            }
-            await _navigationService.GoBackAsync();
         }
     }
 }
